@@ -92,17 +92,19 @@ class Solution {
         ListNode temp = result;
         ListNode t1 = l1;
         ListNode t2 = l2;
+
         StringBuilder sb1 = new StringBuilder();
         while (t1 != null) {
             sb1.append(t1.val);
             t1 = t1.next;
         }
-
         StringBuilder sb2 = new StringBuilder();
         while (t2 != null) {
             sb2.append(t2.val);
             t2 = t2.next;
         }
+        // 翻转后，进行数字相加
+        // 利用BigInteger解决超大整形数溢出问题
         BigInteger sum = new BigInteger(sb1.reverse().toString()).add(new BigInteger(sb2.reverse().toString()));
 
         String sumToUse = sum.toString();
