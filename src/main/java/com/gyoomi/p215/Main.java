@@ -23,12 +23,32 @@ import java.util.Arrays;
  *      说明: 你可以假设 k 总是有效的，且 1 ≤ k ≤ 数组的长度。
  *
  *
+ *
+ *
  * @author Leon
  * @version 2019/5/24 17:01
  */
 
-
 class Solution {
+
+    public int findKthLargest(int[] nums, int k) {
+        // 使用插入排序算法进行排序，按照从大到小进行排序
+        int length = nums.length;
+        for (int i = 1; i < length; i++) {
+            // 此次待插入的数组中数据
+            int curInsert = nums[i];
+            int j = i - 1;
+            while (j >= 0 && curInsert > nums[j]) {
+                nums[j + 1] = nums[j];
+                j--;
+            }
+            nums[j + 1] = curInsert;
+        }
+        return nums[k - 1];
+    }
+}
+
+class Solution1 {
 
     public int findKthLargest(int[] nums, int k) {
         Arrays.sort(nums);
@@ -40,6 +60,8 @@ class Solution {
 public class Main {
 
     public static void main(String[] args) throws Exception {
+        int[] arr = {-9, 12, 8, 55, 84, -90, 25, 28, 25, 3};
+        new Solution().findKthLargest(arr, 1);
 
     }
 
