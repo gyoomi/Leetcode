@@ -1,5 +1,9 @@
 package com.gyoomi.p136;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * 136. 只出现一次的数字
  *
@@ -17,13 +21,54 @@ package com.gyoomi.p136;
  *      输出: 4
  *
  *      思路一：先排序，再进行查找
- *      思路二：hashMap
+ *      思路二：hashMap Time: O(n) Space: O(n)
  *      思路三：使用异或运算的特殊性（非常巧妙）
- *
+ *          与运算（&） 两位同时为“1”，结果才为“1”，否则为0
+ *          或运算（|） 参加运算的两个对象只要有一个为1，其值为1
+ *          异或运算（^） 同为0，异为1.  任何整数^0 不变
  *
  * @author Leon
  * @version 2019/5/26 23:27
  */
+
+class Solution2 {
+
+    /**
+     * 由于 0^a = a，a^a = 0 而数组中除了一个数字是只出现一次的，其他数字均出现两次.
+     *
+     * @param nums
+     * @return
+     */
+    public int singleNumber(int[] nums) {
+        int cal = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            cal = cal ^ nums[i];
+        }
+        return cal;
+    }
+}
+
+class Solution1 {
+
+    public int singleNumber(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            Integer count = map.get(nums[i]);
+            count = count == null ? 1 : ++count;
+            map.put(nums[i], count);
+        }
+
+        Set<Map.Entry<Integer, Integer>> entries = map.entrySet();
+        for (Map.Entry<Integer, Integer> entry : entries) {
+            if (1 == entry.getValue()) {
+                return entry.getKey();
+            }
+        }
+
+        // Can't find then return -1
+        return -1;
+    }
+}
 
 class Solution {
 
@@ -62,7 +107,14 @@ class Solution {
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        int[] arr = {4, 1, 2, 1, 2};
-        new Solution().singleNumber(arr);
+        System.out.println(8 ^ 5 ^ 10 ^ 5 ^ 8);
     }
 }
+
+
+
+
+
+
+
+
