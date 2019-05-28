@@ -26,7 +26,7 @@ package com.gyoomi.p070;
  *       2.  1 阶 + 2 阶
  *       3.  2 阶 + 1 阶
  *
- *      方法一：暴力法
+ *     方法一：暴力法(递归)
  *     算法
  *
  *     在暴力法中，我们将会把所有可能爬的阶数进行组合，也就是 1 和 2 。
@@ -39,8 +39,29 @@ package com.gyoomi.p070;
  *     时间复杂度：O(2^n)，树形递归的大小为 2^n
  *     空间复杂度：O(n)，递归树的深度可以达到 n
  *
+ *     方法二：记忆化递归
+ *     其实此方法是上面方法的改进。
+ *     在上一种方法中，我们计算每一步的结果时出现了冗余。
+ *     另一种思路是，我们可以把每一步的结果存储在 memo数组之中，每当函数再次被调用，我们就直接从 memo 数组返回结果。
  *
+ *     在 memo 数组的帮助下，我们得到了一个修复的递归树，其大小减少到 n。
  *
+ *     方法三：动态规划
+ *     算法
+ *     不难发现，这个问题可以被分解为一些包含最优子结构的子问题，即它的最优解可以从其子问题的最优解来有效地构建，
+ *     我们可以使用动态规划来解决这一问题。
+ *
+ *     第 i 阶可以由以下两种方法得到：
+ *       1. 在第 (i-1)阶后向上爬一阶
+ *       2. 在第 (i-2) 阶后向上爬 2 阶
+ *     所以到达第 i 阶的方法总数就是到第 (i-1) 阶和第 (i-2) 阶的方法数之和。
+ *
+ *     令 dp[i]表示能到达第 i 阶的方法总数：
+ *        dp[i] = dp[i−1] + dp[i−2]
+ *
+ *     复杂度分析
+ *     时间复杂度：O(n)，单循环到 n
+ *     空间复杂度：O(n)，dp 数组用了 n 的空间。
  *
  *
  *
@@ -48,6 +69,47 @@ package com.gyoomi.p070;
  * @author Leon
  * @version 2019/5/27 17:10
  */
+class Solution3 {
+
+    public int climbStairs(int n) {
+        if (n == 1) {
+            return 1;
+        }
+        int[] dp = new int[n + 1];
+        dp[1] = 1;
+        dp[2] = 2;
+        for (int i = 3; i <= n; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        return dp[n];
+    }
+
+}
+
+class Solution2 {
+
+    public int climbStairs(int n) {
+        int[] cache = new int[n + 1];
+        return climb(0, n, cache);
+    }
+
+    private int climb(int i, int n, int[] cache) {
+        if (i > n) {
+            return 0;
+        }
+
+        if (i == n) {
+            return 1;
+        }
+
+        if (cache[i] > 0) {
+            return cache[i];
+        }
+        cache[i] = climb(i + 1, n, cache) + climb(i + 2, n, cache);
+        return cache[i];
+    }
+
+}
 
 class Solution1 {
 
