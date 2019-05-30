@@ -30,7 +30,7 @@ package com.gyoomi.p070;
  *     算法
  *
  *     在暴力法中，我们将会把所有可能爬的阶数进行组合，也就是 1 和 2 。
- *     而在每一步中我们都会继续调用 climbStairsclimbStairs 这个函数模拟爬 1 阶和 2 阶的情形，并返回两个函数的返回值之和。
+ *     而在每一步中我们都会继续调用 climbStairs 这个函数模拟爬 1 阶和 2 阶的情形，并返回两个函数的返回值之和。
  *
  *     climbStairs(i,n)=(i + 1, n) + climbStairs(i + 2, n)
  *     其中 i 定义了当前阶数，而 n 定义了目标阶数。
