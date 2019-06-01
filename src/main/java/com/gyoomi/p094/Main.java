@@ -66,6 +66,28 @@ class Solution2 {
  *     TreeNode(int x) { val = x; }
  * }
  */
+
+class Solution1 {
+
+    public List<Integer> inorderTraversal(TreeNode root) {
+        ArrayList<Integer> result = new ArrayList<>();
+        Stack<TreeNode> stack = new Stack<>();
+        do {
+            while (root != null) {
+                stack.push(root);
+                root = root.left;
+            }
+
+            if (!stack.isEmpty()) {
+                TreeNode pop = stack.pop();
+                result.add(pop.val);
+                root = pop.right;
+            }
+        } while (!stack.isEmpty() || root != null);
+        return result;
+    }
+}
+
 class Solution {
 
     public List<Integer> inorderTraversal(TreeNode root) {
