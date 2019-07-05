@@ -19,7 +19,8 @@ package com.gyoomi.ReverseOnlyLetters;
  *
  *      方法1：
  *           先把字符串的字母进行倒序提取出来；然后在正向循环将非字母的字符插入对应位置的逆序字母的字符串中去。
- *
+ *      方法2：
+ *           双指针
  *
  * @author Leon
  * @version 2019/7/4 9:49
@@ -52,6 +53,35 @@ class Solution {
     }
 }
 
+class Solution2 {
+
+    public String reverseOnlyLetters(String s) {
+        if (s == null || s.length() < 2) {
+            return s;
+        }
+        char[] chars = s.toCharArray();
+        // 左，右指针
+        int l = 0, r = chars.length - 1;
+        while (l < r) {
+            while (l < r && !Character.isLetter(chars[l])) {
+                l++;
+            }
+            while (l < r && !Character.isLetter(chars[r])) {
+                r--;
+            }
+            swap(chars, l, r);
+            l++;
+            r--;
+        }
+        return String.valueOf(chars);
+    }
+
+    public void swap(char[] chars, int i, int j) {
+        char temp = chars[i];
+        chars[i] = chars[j];
+        chars[j] = temp;
+    }
+}
 
 
 
