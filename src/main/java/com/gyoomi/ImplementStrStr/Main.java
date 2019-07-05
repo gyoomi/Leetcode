@@ -40,8 +40,9 @@ class Solution {
         // 模式串的位置
         int j = 0;
         while (i < hayArray.length && j < needArray.length) {
-            if (hayArray[i++] == needArray[j++]) {
-
+            if (hayArray[i] == needArray[j]) {
+                i++;
+                j++;
             } else {
                 i = i - j + 1;
                 j = 0;
