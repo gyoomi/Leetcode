@@ -11,6 +11,9 @@ package com.gyoomi.ImplementStrStr;
  *
  *     方法一：
  *           暴力破解法
+ *     方法二：
+ *          Sunday算法
+ *
  *
  * @author Leon
  * @version 2019/7/5 21:47
@@ -56,3 +59,52 @@ class Solution {
         }
     }
 }
+
+
+class Solution2 {
+
+    public int strStr(String haystack, String needle) {
+        int m = haystack.length();
+        int n = needle.length();
+        int[] occ = getOCC(needle);
+        int jump = 0;
+        for (int i = 0; i <= m - n; i+=jump) {
+            int j = 0;
+            while (j < n && haystack.charAt(i + j) == needle.charAt(j)) {
+                j++;
+            }
+            if (j == n) {
+                return i;
+            }
+            jump = i + n < m ? n - occ[haystack.charAt(i + n)] : 1;
+        }
+        return -1;
+    }
+
+    public int[] getOCC(String p) {
+        int[] occ = new int[128];
+        for (int i = 0; i < occ.length; i++) {
+            occ[i] = -1;
+        }
+        for (int i = 0; i < p.length(); i++) {
+            occ[p.charAt(i)] = i;
+        }
+        return occ;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
