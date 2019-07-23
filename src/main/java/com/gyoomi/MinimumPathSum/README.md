@@ -50,7 +50,51 @@ public class Solution {
 - 时间复杂度 ：O(2^m+n)。每次移动最多可以有两种选择。
 - 空间复杂度 ：O(m+n)。递归的深度是 m+n。
 
+**方法 2：二维动态规划**
 
+
+**算法**
+
+我们新建一个额外的 dp 数组，与原矩阵大小相同。在这个矩阵中，dp(i, j)表示从坐标 (i, j)到右下角的最小路径权值。
+我们初始化右下角的 dp 值为对应的原矩阵值，然后去填整个矩阵，对于每个元素考虑移动到右边或者下面，
+因此获得最小路径和我们有如下递推公式：
+
+**实现**
+
+```java
+public class Solution2 {
+
+    public int minPathSum(int[][] grid) {
+        int[][] dp = new int[grid.length][grid[0].length];
+        for (int i = grid.length - 1; i >= 0; i--) {
+            for (int j = grid[0].length - 1; j >= 0; j--) {
+                if (i == grid.length - 1 && j == grid[0].length - 1) {
+                    dp[i][j] = grid[i][j];
+                } else if (i == grid.length - 1 && j != grid[0].length - 1) {
+                    dp[i][j] = grid[i][j] + dp[i][j + 1];
+                } else if (i != grid.length - 1 && j != grid[0].length - 1) {
+                    dp[i][j] = grid[i][j] + Math.min(dp[i + 1][j], dp[i][j + 1]);
+                } else {
+                    // i != grid.length - 1 && j == grid[0].length - 1
+                    dp[i][j] = grid[i][j] + dp[i + 1][j];
+                }
+            }
+        }
+        return dp[0][0];
+    }
+}
+
+```
+
+
+```
+dp(i,j) = grid(i,j) + min(dp(i+1,j), dp(i,j+1))
+```
+
+**复杂度分析**
+
+- 时间复杂度 ：O(mn)。遍历整个矩阵恰好一次
+- 空间复杂度 ：O(mn)。额外的一个同大小矩阵
 
 
 
