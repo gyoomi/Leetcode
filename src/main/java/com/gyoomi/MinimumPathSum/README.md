@@ -96,8 +96,49 @@ dp(i,j) = grid(i,j) + min(dp(i+1,j), dp(i,j+1))
 - 时间复杂度 ：O(mn)。遍历整个矩阵恰好一次
 - 空间复杂度 ：O(mn)。额外的一个同大小矩阵
 
+**方法 3：一维动态规划**
 
+**算法**
 
+上个解法中，我们可以用一个一维数组来代替二维数组，dp 数组的大小和行大小相同。这是因为对于某个固定状态，只需要考虑下方和右侧的节点。
+首先初始化 dp 数组最后一个元素是右下角的元素值，然后我们向左移更新每个 dp(j)为：
+
+```
+dp(j) = grid(i,j) + min(dp(j), dp(j+1))
+```
+
+我们对于每一行都重复这个过程，然后向上一行移动，计算完成后 dp(0)就是最后的结果。
+
+**代码**
+
+```java
+public class Solution3 {
+
+    public int minPathSum(int[][] grid) {
+        int[] dp = new int[grid[0].length];
+        for (int i = grid.length - 1; i >= 0; i--) {
+            for (int j = grid[0].length - 1; j >= 0; j--) {
+                if (i == grid.length - 1 && j == grid[0].length - 1) {
+                    dp[j] = grid[i][j];
+                } else if (i == grid.length - 1 && j != grid[0].length - 1) {
+                    dp[j] = grid[i][j] + dp[j + 1];
+                } else if (i != grid.length - 1 && j == grid[0].length - 1) {
+                    dp[j] = grid[i][j] + dp[j];
+                } else {
+                    // i != grid.length - 1 && j != grid[0].length
+                    dp[j] = grid[i][j] + Math.min(dp[j], dp[j + 1]);
+                }
+            }
+        }
+        return dp[0];
+    }
+}
+```
+
+**复杂度分析**
+
+- 时间复杂度 ：O(mn)。遍历整个矩阵恰好一次
+- 空间复杂度 ：O(n)。额外的一维数组，和一行大小相同
 
 
 
