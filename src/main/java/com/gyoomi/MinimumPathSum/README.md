@@ -140,8 +140,41 @@ public class Solution3 {
 - 时间复杂度 ：O(mn)。遍历整个矩阵恰好一次
 - 空间复杂度 ：O(n)。额外的一维数组，和一行大小相同
 
+**方法 4：动态规划（不需要额外存储空间）**
 
+**算法**
 
+和方法 2 相同，惟一的区别是，不需要用额外的 dp 数组，而是在原数组上存储，这样就不需要额外的存储空间。递推公式如下
+
+grid(i,j) = grid(i,j) + min(grid(i+1,j), grid(i,j+1))
+
+代码
+
+```java
+
+public class Solution4 {
+
+    public int minPathSum(int[][] grid) {
+        for (int i = grid.length - 1; i >= 0; i--) {
+            for (int j = grid[0].length - 1; j >= 0; j--) {
+                if (i == grid.length - 1 && j != grid[0].length - 1) {
+                    grid[i][j] = grid[i][j] + grid[i][j + 1];
+                } else if (i != grid.length - 1 && j == grid[0].length - 1) {
+                    grid[i][j] = grid[i][j] + grid[i + 1][j];
+                } else if (i != grid.length - 1 && j != grid[0].length - 1) {
+                    grid[i][j] = grid[i][j] + Math.min(grid[i][j + 1], grid[i + 1][j]);
+                }
+            }
+        }
+        return grid[0][0];
+    }
+}
+```
+
+**复杂度分析**
+
+- 时间复杂度 ：O(mn)。遍历整个矩阵恰好一次。
+- 空间复杂度 ：O(1)。不需要额外空间。
 
 
 
