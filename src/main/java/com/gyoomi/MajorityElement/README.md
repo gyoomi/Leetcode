@@ -18,7 +18,7 @@
 输出: 2
 ```
 
-思路1：map暴力破解法
+思路1：hash暴力破解法
 
 ```java
 public class Solution {
@@ -48,3 +48,42 @@ public class Solution {
 }
 ```
 
+思路2：暴力
+
+**想法**
+
+我们可以在平方级的时间里穷举所有情况，来检测每个数是不是众数。
+
+**算法**
+
+暴力算法遍历整个数组，然后用另一重循环统计每个数字出现的次数。将出现次数比其他数字加起来出现次数还多的元素返回。
+
+**代码**
+
+```java
+public class Solution2 {
+
+    public int majorityElement(int[] nums) {
+        int majorityCount = nums.length / 2;
+        for (int num : nums) {
+            int count = 0;
+            for (int ele : nums) {
+                if (num == ele) {
+                    count += 1;
+                }
+            }
+
+            if (count > majorityCount) {
+                return num;
+            }
+        }
+        return -1;
+    }
+}
+```
+
+**复杂度分析**
+
+- 时间复杂度：O(n^2)   暴力算法包含两重嵌套的 for 循环，每一层 nn 次迭代，所以总的是平方级的时间复杂度。
+- 空间复杂度：O(1)     暴力方法没有分配任何与输入规模成比例的额外的空间
+   
