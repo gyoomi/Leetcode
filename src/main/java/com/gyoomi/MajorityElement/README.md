@@ -87,3 +87,28 @@ public class Solution2 {
 - 时间复杂度：O(n^2)   暴力算法包含两重嵌套的 for 循环，每一层 nn 次迭代，所以总的是平方级的时间复杂度。
 - 空间复杂度：O(1)     暴力方法没有分配任何与输入规模成比例的额外的空间
    
+方法3：摩尔投票算法
+
+思路：
+
+其核心思想就是：抵消
+
+最差的情况就是其他所有的数都跟众数做了抵消，但是由于众数出现的次数大于1/2，所以最终剩下的还是众数。
+
+```java
+
+public class Solution3 {
+
+    public int majorityElement(int[] nums) {
+        int count = 0;
+        Integer candidate = null;
+        for (int num : nums) {
+            if (count == 0) {
+                candidate = num;
+            }
+            count += (num == candidate) ? 1 : -1;
+        }
+        return candidate;
+    }
+}
+```
