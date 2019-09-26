@@ -84,8 +84,98 @@ public class Solution {
 - 时间复杂度 : O(N)，其中 N 是树的结点数，因为每个结点都访问一次。
 - 空间复杂度 : 最优情况（完全平衡二叉树）时为 O(log(N))，最坏情况下（完全不平衡二叉树）时为 O(N)，用于维护递归栈。
 
-修改git配置
+**方法二：迭代**
 
+**思路**
+
+从根开始，每次迭代将当前结点从双向队列中弹出。然后，进行方法一中的判断：
+
+- p 和 q 不是 null,
+- p.val 等于 q.val,
+
+若以上均满足，则压入子结点。
+
+**代码**
+
+```java
+public class Solution02 {
+
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        // p and q are both null
+        if (p == null && q == null) {
+            return true;
+        }
+        if (!check(p, q)) {
+            return false;
+        }
+
+        // init deques
+        ArrayDeque<TreeNode> deqP = new ArrayDeque<>();
+        ArrayDeque<TreeNode> deqQ = new ArrayDeque<>();
+
+        deqP.addLast(p);
+        deqQ.addLast(q);
+        while (!deqP.isEmpty()) {
+            p = deqP.removeFirst();
+            q = deqQ.removeFirst();
+            if (!check(p, q)) {
+                return false;
+            }
+            if (p != null) {
+                // in Java nulls are not allowed in Deque
+                if (!check(p.left, q.left)) {
+                    return false;
+                }
+                if (p.left != null) {
+                    deqP.addLast(p.left);
+                    deqQ.addLast(q.left);
+                }
+                if (!check(p.right, q.right)) {
+                    return false;
+                }
+                if (p.right != null) {
+                    deqP.addLast(p.right);
+                    deqQ.addLast(q.right);
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public boolean check(TreeNode p, TreeNode q) {
+        // Both of them are null
+        if (p == null && q == null) {
+            return true;
+        }
+        // One of p and q is null
+        if (p == null || q == null) {
+            return false;
+        }
+        // Equal
+        if (p.val != q.val) {
+            return false;
+        }
+        return true;
+    }
+
+
+    class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+        TreeNode(int x) {
+            val = x;
+        }
+    }
+
+}
+```
+
+复杂度分析
+
+- 时间复杂度 : O(N)，其中 N 是树的结点数，因为每个结点都访问一次。
+- 空间复杂度 : 最优情况（完全平衡二叉树）时为 O(log(N))，最坏情况下（完全不平衡二叉树）时为 O(N)，用于维护双向队列
 
 
 
