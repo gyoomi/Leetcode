@@ -45,8 +45,41 @@
 >当我们发现有一例 左/右子树高度差 ＞ 1 的情况时，代表此树不是平衡树，返回-1；
 >当发现不是平衡树时，后面的高度计算都没有意义了，因此一路返回-1，避免后续多余计算。
 >最差情况是对树做一遍完整DFS，时间复杂度为 O(N)。
->
->
+
+**代码**
+
+```java
+public class Solution {
+
+    public boolean isBalanced(TreeNode root) {
+        return depth(root) != -1;
+    }
+
+    public int depth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int leftHeight = depth(root.left);
+        if (leftHeight == -1) {
+            return -1;
+        }
+        int rightHeight = depth(root.right);
+        if (rightHeight == -1) {
+            return -1;
+        }
+        return Math.abs(leftHeight - rightHeight) <= 1? Math.max(leftHeight, rightHeight) + 1 : -1;
+    }
+
+    class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+        TreeNode(int x) {
+            val = x;
+        }
+    }
+}
+```
 
 
 
