@@ -69,6 +69,101 @@ public class Solution {
 
 **方法 2：迭代**
 
+首先，定义树的存储结构 `TreeNode`。
+
+```java
+/* Definition for a binary tree node. */
+public class TreeNode {
+  int val;
+  TreeNode left;
+  TreeNode right;
+
+  TreeNode(int x) {
+    val = x;
+  }
+}
+```
+
+从根节点开始，每次迭代弹出当前栈顶元素，并将其孩子节点压入栈中，`先压右孩子``再压左孩子`。
+
+在这个算法中，输出到最终结果的顺序按照 `Top->Bottom` 和 `Left->Right`，符合前序遍历的顺序。
+
+**代码实现**
+
+```java
+public class Solution02 {
+
+    public List<Integer> preorderTraversal(TreeNode root) {
+        LinkedList<TreeNode> stack = new LinkedList<>();
+        LinkedList<Integer> output = new LinkedList<>();
+
+        if (root == null) {
+            return output;
+        }
+        stack.add(root);
+        while (!stack.isEmpty()) {
+            TreeNode cur = stack.pollLast();
+            output.add(cur.val);
+            if (root.right != null) {
+                stack.add(root.right);
+            }
+            if (root.left != null) {
+                stack.add(root.left);
+            }
+        }
+
+        return output;
+    }
+
+    /**
+     * Definition for a binary tree node
+     */
+    class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+
+        TreeNode(int x) {
+            val = x;
+        }
+    }
+}
+```
+
+**算法复杂度**
+
+- 时间复杂度：访问每个节点恰好一次，时间复杂度为 `O(N)` ，其中 `N` 是节点的个数，也就是树的大小。
+- 空间复杂度：取决于树的结构，最坏情况存储整棵树，因此空间复杂度是 `O(N)`。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
