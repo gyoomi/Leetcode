@@ -6,35 +6,36 @@
 
 package com.gyoomi.ConvertSortedListtoBinarySearchTree;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * The description of class
  *
  * @author Leon
- * @date 2019-10-17 9:09
+ * @date 2019-10-17 9:59
  */
-public class Solution {
+public class Solution02 {
 
     public TreeNode sortedListToBST(ListNode head) {
-        ArrayList<Integer> list = new ArrayList<>();
-        while (head != null) {
-            list.add(head.val);
-            head = head.next;
-        }
-
-        return convertListToTree(list, 0, list.size());
-    }
-
-    private TreeNode convertListToTree(List<Integer> list, int l, int r) {
-        if (l >= r) {
+        if (head == null) {
             return null;
         }
-        int mid = (l + r) / 2;
-        TreeNode root = new TreeNode(list.get(mid));
-        root.left = convertListToTree(list, l, mid);
-        root.right = convertListToTree(list, mid + 1, r);
+        return sortedListToBST(head, null);
+    }
+
+    private TreeNode sortedListToBST(ListNode head, ListNode tail) {
+        if (head == tail) {
+            return null;
+        }
+
+        ListNode slow = head;
+        ListNode fast = head;
+        while (fast != tail && fast.next != tail) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        TreeNode root = new TreeNode(slow.val);
+        root.left = sortedListToBST(head, slow);
+        root.right = sortedListToBST(slow.next, tail);
         return root;
     }
 
