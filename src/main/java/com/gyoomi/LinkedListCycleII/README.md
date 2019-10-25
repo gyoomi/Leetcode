@@ -95,7 +95,100 @@ public class Solution {
 
 不管成环或者不成欢的输入，我们都需要将每个节点插入 Set 中一次。两者唯一的区别是最后访问的节点后是 null 还是一个已经访问过的节点。因此，由于 Set 包含 `n` 个不同的节点，所需空间与节点数目也是线性关系的。
 
+**解法二 快慢指针**
 
+
+>学数据结构课程的时候，应该都用过这个方法，很巧妙，快慢指针。
+原理也很好理解，想象一下圆形跑道，两个人跑步，如果一个人跑的快，一个人跑的慢，那么不管两个人从哪个位置出发，跑的过程中两人一定会相遇。
+所以这里我们用两个指针 fast 和 slow。fast 每次走两步，slow 每次走一步，如果 fast 到达了 null 就说明没有环。如果 fast 和 slow 相遇了就说明有环。
+但是这道题，我们需要找到入口点，而快慢指针相遇的点可能并不是入口点，而是环中的某一个点，所以需要一些数学上的推导，参考了 这里 。
+
+如下图，我们明确几个位置。
+
+![](./asserts/001.jpg)
+
+
+从 `head` 到入口点的距离设为 `x`，入口点到相遇点的距离设为 `y`，环的的长度设为 `n`。
+
+假设 `slow` 指针走过的距离为 `t`，那么 `fast` 指针走过的一定是 `slow` 指针的 `2` 倍，也就是 `2t`。
+
+`slow` 指针从 `head` 出发走了 `x` 的距离到达入口点，然后可能走了 `k1` 圈，然后再次回到`入口点`，再走了 `y 的距离到达`相遇点`和 `fast` 指针相遇。
+
+`t = x + k1 * n + y`
+
+`fast` 指针同理，`fast `指针从 `head` 出发走了 `x` 的距离到达入口点，然后可能走了 `k2` 圈，然后再次回到`入口点`，再走了 `y` 的距离到达相遇点和 `slow` 指针相遇。
+
+`2t = x + k2 * n + y`
+
+上边两个等式做一个差，可以得到
+
+`t = (k2 - k1) * n`
+
+设 `k = k2 - k1 `，那么 `t = k * n`。
+
+把 `t = k * n` 代入到第一个式子 `t = x + k1 * n + y` 中。
+
+`k * n = x + k1 * n + y`
+
+移项，`x = (k - k1) * n - y`
+
+取出一个 `n` 和 `y` 结合，`x = (k - k1 - 1) * n + (n - y)`
+
+左边的含义就是从 `head` 到达入口点。
+
+右边的含义， `n - y` 就是从相遇点到入口点的距离，`(k - k1 - 1) * n` 就是转 `(k - k1 - 1)` 圈。
+
+左边右边的含义结合起来就是，从相遇点走到入口点，然后转 `(k - k1 - 1)` 圈后再次回到入口点的这段时间，刚好就等于从 `head` 走向入口点的时间。
+
+所以代码的话，我们只需要 `meet` 指针从相遇点出发的同时，让 `head` 指针也出发， `head` 指针和 `meet` 指针相遇的位置就是入口点了。
+
+**代码实现**
+
+```java
+public class Solution02 {
+
+
+    public ListNode detectCycle(ListNode head) {
+        ListNode slow = head;
+        ListNode fast = head;
+        ListNode meet = null;
+
+        while (fast != null) {
+            if (fast.next == null) {
+                return null;
+            }
+            slow = slow.next;
+            fast = fast.next.next;
+
+            // 到达相遇点
+            if (slow == fast) {
+                meet = fast;
+                while (head != meet) {
+                    head = head.next;
+                    meet = meet.next;
+                }
+                return head;
+            }
+
+        }
+        return null;
+    }
+
+
+    static class ListNode {
+        int val;
+        ListNode next;
+        ListNode(int x) {
+            val = x;
+            next = null;
+        }
+    }
+}
+```
+
+**结论**
+
+让一个指针从头部开始走，另一个指针从相遇点走，等这两个指针相遇那就走了x步此时就是环的起点。
 
 
 
